@@ -2,16 +2,16 @@
 // ============================================================
 // CONFIGURACIÓN GLOBAL — TIENDA
 // ============================================================
-define('DB_HOST', 'localhost')        // Completar en instalacion;
-define('DB_NAME', 'c2781705_impre3d')         // Completar en instalacion;
-define('DB_USER', 'c2781705_impre3d')    // Completar en instalacion;
-define('DB_PASS', 'za01PA5sa/tune@')   // Completar en instalacion;
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'c2781705_impre3d');
+define('DB_USER', 'c2781705_impre3d');
+define('DB_PASS', 'za01PA5sa/tune@');
 
-define('SITE_NAME', 'Studio Digital Store');
-define('SITE_URL', 'https://btlimpresion3d.com.ar') // Completar en instalacion;
+define('SITE_NAME', 'BTL Impresión 3D');
+define('SITE_URL', 'https://btlimpresion3d.com.ar');
 define('ADMIN_USER', 'admin');
 define('ADMIN_PASS', '$2y$10$xQ8kG5YQ7z6wN3v5Q7z6wOJ5Q7z6wN3v5Q7z6wN3v5Q7z6wN3v5Q'); // cambiar
-define('ADMIN_PASS_PLAIN', 'CAMBIAR') // Cambiar despues de instalar; // Solo para primer login, después cambiar
+define('ADMIN_PASS_PLAIN', 'CAMBIAR');
 
 define('MP_ACCESS_TOKEN', 'MP_ACCESS_TOKEN_AQUI'); // MercadoPago
 define('MP_PUBLIC_KEY', 'MP_PUBLIC_KEY_AQUI');
