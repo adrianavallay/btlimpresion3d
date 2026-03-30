@@ -1,5 +1,8 @@
 config_override.php
-bkp/
-uploads/
 .DS_Store
 *.log
+
+uploads/*
+!uploads/.gitkeep
+bkp/*
+!bkp/.gitkeep
