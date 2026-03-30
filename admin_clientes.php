@@ -37,6 +37,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'toggl
     redirect($back);
 }
 
+// ── GET: Eliminar cliente ──
+if (($_GET['action'] ?? '') === 'eliminar') {
+    $cid = (int) ($_GET['id'] ?? 0);
+    if ($cid > 0) {
+        $stmt = $db->prepare("DELETE FROM clientes WHERE id = ?");
+        $stmt->execute([$cid]);
+        flash('success', 'Cliente eliminado correctamente.');
+    }
+    redirect('admin_clientes.php');
+}
+
 // ── POST: Export CSV ──
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'export_csv') {
     header('Content-Type: text/csv; charset=utf-8');
@@ -261,6 +272,12 @@ $qs_base = $qs_parts ? '&' . implode('&', $qs_parts) : '';
 <?php else: ?>
 <!-- ============ CLIENT LIST ============ -->
 
+<?php if ($flash_msg = flash('success')): ?>
+<div class="alert-success" style="background:rgba(16,185,129,.12);color:#065f46;border:1px solid #10b98140;padding:12px 20px;border-radius:10px;margin-bottom:18px;font-size:.92rem;">
+  <?= sanitize($flash_msg) ?>
+</div>
+<?php endif; ?>
+
 <div class="page-header">
   <h1>Clientes</h1>
   <p class="page-subtitle"><?= $total ?> cliente<?= $total !== 1 ? 's' : '' ?> registrados</p>
@@ -322,7 +339,12 @@ $qs_base = $qs_parts ? '&' . implode('&', $qs_parts) : '';
                 </label>
               </form>
             </td>
-            <td><a href="admin_clientes.php?id=<?= $c['id'] ?>" class="btn-ver">Ver</a></td>
+            <td>
+              <a href="admin_clientes.php?id=<?= $c['id'] ?>" class="btn-ver">Ver</a>
+              <a href="admin_clientes.php?action=eliminar&id=<?= $c['id'] ?>"
+                 class="btn-ver" style="background:rgba(239,68,68,.12);color:#ef4444;border-color:#ef444440;margin-left:4px;"
+                 onclick="return confirm('¿Estás seguro de que querés eliminar este cliente? Esta acción no se puede deshacer.')">Eliminar</a>
+            </td>
           </tr>
           <?php endforeach; ?>
         <?php endif; ?>
