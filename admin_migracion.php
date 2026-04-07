@@ -120,10 +120,9 @@ $admin_page = 'migracion';
       </p>
       <ol style="font-size:0.82rem;color:#555;line-height:2;margin:0;padding-left:20px;">
         <li>Descarg&aacute; el .sql</li>
-        <li>Sub&iacute; db_installer.php al nuevo servidor</li>
-        <li>Abrilo en el navegador y configur&aacute; la DB</li>
-        <li>Sub&iacute; el .sql &rarr; importa autom&aacute;ticamente</li>
-        <li>Elimin&aacute; db_installer.php</li>
+        <li>En el nuevo cPanel &rarr; phpMyAdmin</li>
+        <li>Seleccion&aacute; la nueva DB</li>
+        <li>Importar &rarr; subir el .sql</li>
       </ol>
     </div>
     <div>

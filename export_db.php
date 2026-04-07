@@ -10,7 +10,7 @@ set_time_limit(300);
 ini_set('memory_limit', '256M');
 
 $pdo = pdo();
-$sql  = "-- BTL Impresion 3D — DB Export\n";
+$sql  = "-- Studio Digital Store — DB Export\n";
 $sql .= "-- Fecha: " . date('Y-m-d H:i:s') . "\n";
 $sql .= "-- Antes de importar: crea la DB y configura config.php\n\n";
 $sql .= "SET FOREIGN_KEY_CHECKS=0;\n\n";

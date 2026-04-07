@@ -26,6 +26,33 @@ function estado_badge(string $estado): string {
 }
 }
 
+// ── POST: Eliminar cliente (JSON) ──
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+  if (stripos($contentType, 'application/json') !== false) {
+    header('Content-Type: application/json');
+    $input = json_decode(file_get_contents('php://input'), true);
+
+    if (($input['action'] ?? '') === 'eliminar') {
+      $id = (int)($input['id'] ?? 0);
+      if ($id > 0) {
+        try {
+          $pdo = pdo();
+          $pdo->prepare("UPDATE pedidos SET cliente_id = NULL WHERE cliente_id = ?")->execute([$id]);
+          $pdo->prepare("DELETE FROM wishlist WHERE cliente_id = ?")->execute([$id]);
+          $pdo->prepare("DELETE FROM clientes WHERE id = ?")->execute([$id]);
+          echo json_encode(['ok' => true]);
+        } catch (Exception $e) {
+          echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
+        }
+      } else {
+        echo json_encode(['ok' => false, 'error' => 'ID inválido']);
+      }
+      exit();
+    }
+  }
+}
+
 // ── POST: Toggle activo ──
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'toggle_activo') {
     $cid = (int) ($_POST['cliente_id'] ?? 0);
@@ -35,17 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'toggl
     }
     $back = $_POST['back'] ?? 'admin_clientes.php';
     redirect($back);
-}
-
-// ── GET: Eliminar cliente ──
-if (($_GET['action'] ?? '') === 'eliminar') {
-    $cid = (int) ($_GET['id'] ?? 0);
-    if ($cid > 0) {
-        $stmt = $db->prepare("DELETE FROM clientes WHERE id = ?");
-        $stmt->execute([$cid]);
-        flash('success', 'Cliente eliminado correctamente.');
-    }
-    redirect('admin_clientes.php');
 }
 
 // ── POST: Export CSV ──
@@ -272,12 +288,6 @@ $qs_base = $qs_parts ? '&' . implode('&', $qs_parts) : '';
 <?php else: ?>
 <!-- ============ CLIENT LIST ============ -->
 
-<?php if ($flash_msg = flash('success')): ?>
-<div class="alert-success" style="background:rgba(16,185,129,.12);color:#065f46;border:1px solid #10b98140;padding:12px 20px;border-radius:10px;margin-bottom:18px;font-size:.92rem;">
-  <?= sanitize($flash_msg) ?>
-</div>
-<?php endif; ?>
-
 <div class="page-header">
   <h1>Clientes</h1>
   <p class="page-subtitle"><?= $total ?> cliente<?= $total !== 1 ? 's' : '' ?> registrados</p>
@@ -321,7 +331,7 @@ $qs_base = $qs_parts ? '&' . implode('&', $qs_parts) : '';
           <tr><td colspan="8" class="empty-cell">No se encontraron clientes</td></tr>
         <?php else: ?>
           <?php foreach ($clientes as $c): ?>
-          <tr>
+          <tr id="fila-cliente-<?= $c['id'] ?>">
             <td><?= sanitize($c['nombre'] ?? '-') ?></td>
             <td><?= sanitize($c['email'] ?? '-') ?></td>
             <td><?= sanitize($c['telefono'] ?: '-') ?></td>
@@ -341,9 +351,10 @@ $qs_base = $qs_parts ? '&' . implode('&', $qs_parts) : '';
             </td>
             <td>
               <a href="admin_clientes.php?id=<?= $c['id'] ?>" class="btn-ver">Ver</a>
-              <a href="admin_clientes.php?action=eliminar&id=<?= $c['id'] ?>"
-                 class="btn-ver" style="background:rgba(239,68,68,.12);color:#ef4444;border-color:#ef444440;margin-left:4px;"
-                 onclick="return confirm('¿Estás seguro de que querés eliminar este cliente? Esta acción no se puede deshacer.')">Eliminar</a>
+              <button onclick="eliminarCliente(<?= $c['id'] ?>, '<?= htmlspecialchars($c['nombre'], ENT_QUOTES) ?>')"
+                style="padding:6px 14px;border:1px solid #dc2626;color:#dc2626;background:transparent;border-radius:8px;font-size:0.78rem;font-weight:700;text-transform:uppercase;cursor:pointer;margin-left:6px;">
+                Eliminar
+              </button>
             </td>
           </tr>
           <?php endforeach; ?>
@@ -389,6 +400,40 @@ $qs_base = $qs_parts ? '&' . implode('&', $qs_parts) : '';
 <?php include __DIR__ . '/includes/admin_footer.php'; ?>
 
 <script src="js/admin.js"></script>
+
+<script>
+function eliminarCliente(id, nombre) {
+  if (!confirm('¿Eliminar al cliente "' + nombre + '"?\nEsta acción no se puede deshacer.')) return;
+
+  fetch('admin_clientes.php', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({action: 'eliminar', id: id})
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d.ok) {
+      document.getElementById('fila-cliente-' + id)?.remove();
+      mostrarAlerta('Cliente eliminado correctamente', 'ok');
+    } else {
+      mostrarAlerta('Error: ' + d.error, 'err');
+    }
+  });
+}
+
+function mostrarAlerta(texto, tipo) {
+  const div = document.createElement('div');
+  div.style.cssText = 'position:fixed;top:20px;right:20px;z-index:3000;' +
+    'padding:14px 20px;border-radius:8px;font-size:0.88rem;font-weight:600;' +
+    'background:' + (tipo==='ok' ? '#f0fdf4' : '#fef2f2') + ';' +
+    'border:1px solid ' + (tipo==='ok' ? '#86efac' : '#fca5a5') + ';' +
+    'color:' + (tipo==='ok' ? '#166534' : '#dc2626') + ';' +
+    'box-shadow:0 4px 12px rgba(0,0,0,0.1);';
+  div.textContent = texto;
+  document.body.appendChild(div);
+  setTimeout(() => div.remove(), 4000);
+}
+</script>
 
 </body>
 </html>

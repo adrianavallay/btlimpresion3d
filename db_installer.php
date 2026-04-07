@@ -129,7 +129,7 @@ if (isset($_POST['test_connection'])) {
 <div class="wrap">
   <div class="header">
     <h1>DB Installer</h1>
-    <p>Importar base de datos &mdash; BTL Impresi&oacute;n 3D</p>
+    <p>Importar base de datos &mdash; Studio Digital Store</p>
   </div>
 
   <!-- Progress -->
