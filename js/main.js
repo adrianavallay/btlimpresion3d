@@ -15,17 +15,13 @@
         localStorage.setItem(STORAGE_KEY, theme);
     }
 
-    // Init from storage or system preference
+    // Init: dark por defecto, salvo que el usuario haya guardado su preferencia
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-        setTheme(saved);
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        setTheme('dark');
-    }
+    setTheme(saved || 'dark');
 
     if (themeToggle) {
         themeToggle.addEventListener('click', () => {
-            const current = html.getAttribute('data-theme') || 'light';
+            const current = html.getAttribute('data-theme') || 'dark';
             setTheme(current === 'light' ? 'dark' : 'light');
         });
     }
