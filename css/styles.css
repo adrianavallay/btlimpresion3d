@@ -1214,6 +1214,18 @@ a.contact-card:hover {
     font-size: 0.8rem;
     color: var(--text-muted);
 }
+.contact__bottom p { margin: 4px 0; }
+.contact__credit { font-size: 0.75rem; opacity: 0.75; }
+.contact__credit a {
+    color: var(--text-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.contact__credit a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
 .contact { padding-bottom: 40px; }
 
 /* ============================================================
