@@ -450,22 +450,46 @@
         });
     });
 
-    // --- Form submit feedback ---
+    // --- Form submit (envia a contact.php) ---
     const form = document.querySelector('.contact__form');
     if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = form.querySelector('button[type="submit"]');
             const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> MENSAJE ENVIADO';
+            const sendingHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10" opacity="0.25"/><path d="M22 12a10 10 0 0 1-10 10"/></svg> ENVIANDO...';
+            const okHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> MENSAJE ENVIADO';
+
+            btn.innerHTML = sendingHTML;
             btn.style.pointerEvents = 'none';
             btn.style.opacity = '0.7';
-            setTimeout(() => {
+
+            try {
+                const formData = new FormData(form);
+                const res = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+                const data = await res.json().catch(() => ({}));
+
+                if (res.ok && data.ok) {
+                    btn.innerHTML = okHTML;
+                    form.reset();
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.style.pointerEvents = '';
+                        btn.style.opacity = '';
+                    }, 3500);
+                } else {
+                    throw new Error(data.error || 'No se pudo enviar');
+                }
+            } catch (err) {
                 btn.innerHTML = originalHTML;
                 btn.style.pointerEvents = '';
                 btn.style.opacity = '';
-                form.reset();
-            }, 3000);
+                alert('No pudimos enviar el mensaje. Escribinos por WhatsApp o intentalo de nuevo.');
+            }
         });
     }
 
