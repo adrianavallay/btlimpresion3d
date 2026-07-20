@@ -99,13 +99,17 @@ button { cursor: pointer; font: inherit; background: none; border: 0; color: inh
 
 /* ── Cursor ─────────────────────────────── */
 .cursor, .cursor-ring { display: none; }
+
+/* Con el cursor personalizado activo, ocultar el puntero nativo */
+body.has-cursor, body.has-cursor * { cursor: none !important; }
+
 @media (hover: hover) and (pointer: fine) {
-  .cursor {
+  body.has-cursor .cursor {
     display: block; position: fixed; top: 0; left: 0; z-index: 999;
     width: 8px; height: 8px; border-radius: 50%;
     background: var(--accent); pointer-events: none;
   }
-  .cursor-ring {
+  body.has-cursor .cursor-ring {
     display: flex; align-items: center; justify-content: center;
     position: fixed; top: 0; left: 0; z-index: 998;
     width: 44px; height: 44px; border-radius: 50%;

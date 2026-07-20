@@ -423,6 +423,8 @@ function footerFX() {
 function cursorFX() {
   if (isTouch) return;
 
+  document.body.classList.add("has-cursor");
+
   const dot = document.getElementById("cursor");
   const ring = document.getElementById("cursorRing");
   const dotX = gsap.quickTo(dot, "x", { duration: 0.12, ease: "power2" });
