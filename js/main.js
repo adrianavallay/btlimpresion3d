@@ -530,21 +530,27 @@ function navFX() {
 const noAnim = window.matchMedia("(prefers-reduced-motion: reduce)").matches
   || new URLSearchParams(location.search).has("noanim");
 
+// Ejecuta cada efecto de forma aislada: si uno falla, el resto sigue
+const safe = (fn) => { try { fn(); } catch (e) { console.error("[FX]", fn.name, e); } };
+
+// El cursor personalizado es feedback directo del ratón, no animación
+// decorativa: se activa siempre que haya puntero fino
+safe(cursorFX);
+
 if (!noAnim) {
-  runPreloader();
-  heroScrollFX();
-  marqueeFX();
-  revealFX();
-  counterFX();
-  servicesFX();
-  projectsFX();
-  processFX();
-  reviewsFX();
-  ctaFX();
-  footerFX();
-  cursorFX();
-  magneticFX();
-  whatsappFX();
+  safe(runPreloader);
+  safe(heroScrollFX);
+  safe(marqueeFX);
+  safe(revealFX);
+  safe(counterFX);
+  safe(servicesFX);
+  safe(projectsFX);
+  safe(processFX);
+  safe(reviewsFX);
+  safe(ctaFX);
+  safe(footerFX);
+  safe(magneticFX);
+  safe(whatsappFX);
 } else {
   // Sin animaciones: retirar preloader, mostrar todo y permitir
   // desplazar los proyectos en horizontal de forma nativa
