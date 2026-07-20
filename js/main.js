@@ -11,7 +11,7 @@ const isTouch = window.matchMedia("(hover: none)").matches;
 /* ──────────────────────────────────────────
    PRELOADER → intro del hero
    ────────────────────────────────────────── */
-function runPreloader() {
+function runPreloader(simple = false) {
   const counter = { val: 0 };
   const words = gsap.utils.toArray(".preloader__word");
   const tl = gsap.timeline({
@@ -24,12 +24,18 @@ function runPreloader() {
   // Contador 0 → 100
   tl.to(counter, {
     val: 100,
-    duration: 2.2,
+    duration: simple ? 1.2 : 2.2,
     ease: "power2.inOut",
     onUpdate: () => {
       document.getElementById("loadCount").textContent = Math.round(counter.val);
     }
   }, 0);
+
+  if (simple) {
+    // Versión con movimiento reducido: solo contador y fundido de salida
+    tl.to("#preloader", { autoAlpha: 0, duration: 0.4 }, "+=0.2");
+    return tl;
+  }
 
   // Palabras rotando
   words.forEach((w, i) => {
@@ -552,10 +558,9 @@ if (!noAnim) {
   safe(magneticFX);
   safe(whatsappFX);
 } else {
-  // Sin animaciones: retirar preloader, mostrar todo y permitir
-  // desplazar los proyectos en horizontal de forma nativa
-  const pre = document.getElementById("preloader");
-  if (pre) pre.remove();
+  // Movimiento reducido: preloader simple (solo contador + fundido),
+  // contenido visible sin efectos y proyectos con scroll nativo
+  safe(() => runPreloader(true));
   document.querySelectorAll(".counter").forEach((el) => { el.textContent = el.dataset.target; });
   const pin = document.getElementById("projectsPin");
   pin.style.overflowX = "auto";
