@@ -472,6 +472,22 @@ function magneticFX() {
 }
 
 /* ──────────────────────────────────────────
+   TÁCTIL — los efectos hover se activan cuando
+   el elemento cruza la zona central de la pantalla
+   ────────────────────────────────────────── */
+function touchHoverFX() {
+  if (!isTouch) return;
+  gsap.utils.toArray(".service, .project, .step, .review").forEach((el) => {
+    ScrollTrigger.create({
+      trigger: el,
+      start: "top 70%",
+      end: "bottom 30%",
+      toggleClass: { targets: el, className: "in-view" }
+    });
+  });
+}
+
+/* ──────────────────────────────────────────
    WHATSAPP — entrada con rebote tras el preloader
    ────────────────────────────────────────── */
 function whatsappFX() {
@@ -533,8 +549,9 @@ function navFX() {
 /* ──────────────────────────────────────────
    INIT
    ────────────────────────────────────────── */
-const noAnim = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  || new URLSearchParams(location.search).has("noanim");
+// Las animaciones se ven igual en todos los sistemas (Mac, Windows, móvil).
+// El modo sin animaciones solo se activa manualmente con ?noanim en la URL.
+const noAnim = new URLSearchParams(location.search).has("noanim");
 
 // Ejecuta cada efecto de forma aislada: si uno falla, el resto sigue
 const safe = (fn) => { try { fn(); } catch (e) { console.error("[FX]", fn.name, e); } };
@@ -557,6 +574,7 @@ if (!noAnim) {
   safe(footerFX);
   safe(magneticFX);
   safe(whatsappFX);
+  safe(touchHoverFX);
 } else {
   // Movimiento reducido: preloader simple (solo contador + fundido),
   // contenido visible sin efectos y proyectos con scroll nativo

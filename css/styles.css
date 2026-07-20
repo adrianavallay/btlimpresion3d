@@ -153,9 +153,6 @@ body.has-cursor, body.has-cursor * { cursor: none !important; }
 @media (max-width: 560px) {
   .whatsapp-fab { width: 56px; height: 56px; right: 1.1rem; bottom: 1.1rem; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .whatsapp-fab__ring { animation: none; }
-}
 
 /* ── Barra de progreso ──────────────────── */
 .scroll-progress {
@@ -714,12 +711,21 @@ body.menu-open .header__burger span { background: var(--on-dark); }
   .service { grid-template-columns: 2.2rem 1fr; gap: 0.8rem; padding: 1.5rem 0.4rem; }
   .service__desc { grid-column: 2; }
   .service__arrow { display: none; }
+  .service:hover, .service.in-view { padding-left: 0.9rem; }
 }
 
-/* ── Reduced motion ─────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001s !important;
-    transition-duration: 0.001s !important;
-  }
+/* ── Táctil: estados hover activados por scroll ──
+   En pantallas táctiles no hay hover; el JS añade
+   .in-view cuando el elemento cruza el centro. */
+.service.in-view {
+  background: rgba(247, 243, 238, 0.045);
+  padding-left: 1.8rem;
 }
+.service.in-view .service__name { color: var(--accent); }
+.service.in-view .service__arrow { opacity: 1; transform: translateX(0) rotate(0deg); }
+.project.in-view .project__img img { transform: scale(1.06); }
+.step.in-view {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 50px -24px rgba(22, 19, 15, 0.28);
+}
+.review.in-view { transform: translateY(-4px); border-color: rgba(217, 119, 6, 0.5); }
