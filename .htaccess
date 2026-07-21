@@ -1,0 +1,10 @@
+# En el hosting, servir la versión PHP (index.html es solo el demo estático de GitHub Pages)
+DirectoryIndex index.php index.html
+
+# No listar directorios
+Options -Indexes
+
+# Bloquear archivos sensibles
+<FilesMatch "^(config\.php|config\.sample\.php|schema\.sql|README-DEPLOY\.md)$">
+  Require all denied
+</FilesMatch>

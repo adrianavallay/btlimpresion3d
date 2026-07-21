@@ -2,9 +2,9 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "bolivians-web",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["-y", "http-server", "-p", "5173", "-c-1", "."],
+      "name": "bolivians-php",
+      "runtimeExecutable": "php",
+      "runtimeArgs": ["-S", "127.0.0.1:5173", "-t", "."],
       "port": 5173
     }
   ]

@@ -1,0 +1,224 @@
+/* ═══════════════════════════════════════════
+   Panel Bolivians Reformes
+   ═══════════════════════════════════════════ */
+
+:root {
+  --bg: #F7F3EE;
+  --ink: #16130F;
+  --ink-soft: #4A443C;
+  --muted: #8A8178;
+  --accent: #D97706;
+  --accent-deep: #B45309;
+  --line: rgba(22, 19, 15, 0.12);
+  --white: #FDFCFA;
+  --dark: #16130F;
+  --danger: #DC2626;
+  --font-display: "Archivo", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ─────────────────────────────── */
+.layout { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: 250px; flex-shrink: 0;
+  background: var(--dark); color: var(--bg);
+  display: flex; flex-direction: column;
+  padding: 1.6rem 1.2rem;
+  position: sticky; top: 0; height: 100vh;
+}
+.sidebar__brand {
+  display: flex; gap: 0.7rem; align-items: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.05rem;
+  line-height: 1.15; margin-bottom: 2rem;
+}
+.sidebar__brand small { font-weight: 500; color: var(--muted); font-size: 0.72rem; }
+.sidebar__mark {
+  width: 38px; height: 38px; border-radius: 9px; flex-shrink: 0;
+  background: var(--accent); color: var(--white);
+  display: inline-grid; place-items: center;
+  font-family: var(--font-display); font-weight: 900; font-size: 1.2rem;
+}
+.sidebar__nav { display: flex; flex-direction: column; gap: 0.25rem; }
+.sidebar__nav a {
+  color: rgba(247, 243, 238, 0.75); text-decoration: none;
+  font-family: var(--font-display); font-weight: 600; font-size: 0.92rem;
+  padding: 0.6rem 0.8rem; border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+.sidebar__nav a:hover { background: rgba(247, 243, 238, 0.08); color: var(--white); }
+.sidebar__nav a.active { background: var(--accent); color: var(--white); }
+.sidebar__foot {
+  margin-top: auto; display: flex; flex-direction: column; gap: 0.5rem;
+  font-size: 0.85rem;
+}
+.sidebar__foot a { color: var(--muted); text-decoration: none; }
+.sidebar__foot a:hover { color: var(--white); }
+.sidebar__foot .logout { color: #F5A97B; }
+
+.content { flex: 1; padding: 2.4rem clamp(1.2rem, 4vw, 3.5rem); max-width: 1100px; }
+.content h1 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 1.8rem; letter-spacing: -0.02em; margin-bottom: 1.2rem;
+}
+.lead { color: var(--ink-soft); margin-bottom: 1.6rem; max-width: 60ch; }
+.subhead {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.15rem;
+  margin: 2.2rem 0 1rem; padding-top: 1.6rem; border-top: 1px solid var(--line);
+}
+
+/* ── Flash ──────────────────────────────── */
+.flash {
+  background: #E8F5E9; border: 1px solid #A5D6A7; color: #1B5E20;
+  padding: 0.8rem 1.1rem; border-radius: 8px; margin-bottom: 1.4rem;
+  font-weight: 500;
+}
+.flash--error { background: #FDECEA; border-color: #F5C6CB; color: #93261F; }
+
+/* ── Tarjetas del dashboard ─────────────── */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+.card {
+  background: var(--white); border: 1px solid var(--line); border-radius: 12px;
+  padding: 1.4rem; text-decoration: none; color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 14px 30px -18px rgba(22, 19, 15, 0.35);
+}
+.card h2 {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.05rem;
+  margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.card p { color: var(--muted); font-size: 0.85rem; }
+.badge {
+  background: var(--accent); color: var(--white);
+  font-size: 0.72rem; font-weight: 700;
+  padding: 0.1rem 0.55rem; border-radius: 99px;
+}
+
+/* ── Formularios ────────────────────────── */
+.form {
+  background: var(--white); border: 1px solid var(--line); border-radius: 12px;
+  padding: 1.6rem; margin-bottom: 1.2rem;
+}
+fieldset { border: 0; margin-bottom: 1.8rem; }
+legend {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.05rem;
+  margin-bottom: 1rem; color: var(--accent-deep);
+}
+label {
+  display: block; font-weight: 600; font-size: 0.82rem;
+  color: var(--ink-soft); margin-bottom: 0.9rem;
+}
+input[type="text"], input[type="number"], input[type="password"], textarea {
+  display: block; width: 100%; margin-top: 0.3rem;
+  font: inherit; font-weight: 400; color: var(--ink);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus, textarea:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+}
+textarea { resize: vertical; }
+input[type="file"] { margin-top: 0.4rem; font-size: 0.85rem; }
+.row3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0 1rem; }
+.hint { font-size: 0.8rem; color: var(--muted); margin: -0.3rem 0 0.9rem; }
+.hint code { background: var(--bg); padding: 0.1rem 0.4rem; border-radius: 4px; }
+
+.imgfield { display: flex; gap: 1rem; align-items: flex-start; margin-top: 0.4rem; }
+.imgfield img {
+  width: 130px; height: 90px; object-fit: cover;
+  border-radius: 8px; border: 1px solid var(--line);
+}
+
+/* ── Filas editables (servicios/proyectos/opiniones) ── */
+.form--row {
+  display: flex; gap: 1.1rem; align-items: flex-start;
+  padding: 1.1rem 1.3rem;
+}
+.form--row label { margin-bottom: 0.55rem; }
+.form--row .grow { flex: 1; }
+.is-hidden-row { opacity: 0.55; border-style: dashed; }
+.rownum {
+  font-family: "Fraunces", serif; font-style: italic;
+  color: var(--accent); font-size: 1.05rem; padding-top: 0.4rem;
+}
+.thumb {
+  width: 90px; height: 90px; object-fit: cover;
+  border-radius: 8px; border: 1px solid var(--line); flex-shrink: 0;
+}
+.thumb--wide { width: 130px; }
+.rowactions { display: flex; flex-direction: column; gap: 0.45rem; flex-shrink: 0; }
+.movebtns { display: flex; flex-direction: column; gap: 0.3rem; }
+.movebtns button {
+  width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--bg); cursor: pointer; font-size: 0.7rem; color: var(--ink-soft);
+}
+.movebtns button:hover { background: var(--accent); color: var(--white); border-color: var(--accent); }
+.filelabel { font-size: 0.8rem; }
+
+/* ── Botones ────────────────────────────── */
+.btn-primary, .btn-ghost, .btn-danger {
+  font-family: var(--font-display); font-weight: 700; font-size: 0.9rem;
+  padding: 0.7rem 1.5rem; border-radius: 99px; border: 0; cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn-primary { background: var(--accent); color: var(--white); }
+.btn-primary:hover { background: var(--accent-deep); }
+.btn-ghost {
+  background: transparent; color: var(--ink-soft);
+  border: 1.5px solid var(--line);
+}
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+.btn-danger { background: transparent; color: var(--danger); border: 1.5px solid rgba(220, 38, 38, 0.35); }
+.btn-danger:hover { background: var(--danger); color: var(--white); }
+.btn-sm { padding: 0.5rem 1rem; font-size: 0.8rem; }
+
+/* ── Login ──────────────────────────────── */
+.login-body {
+  min-height: 100vh; display: grid; place-items: center;
+  background: var(--dark); padding: 1.5rem;
+}
+.login-card {
+  width: min(420px, 100%);
+  background: var(--white); border-radius: 16px;
+  padding: 2.2rem 2rem;
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.6);
+}
+.login-brand {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.05rem;
+  margin-bottom: 1.6rem;
+}
+.login-brand em { font-family: "Fraunces", serif; font-weight: 400; color: var(--accent-deep); }
+.login-card h1 {
+  font-family: var(--font-display); font-weight: 800; font-size: 1.4rem;
+  letter-spacing: -0.02em; margin-bottom: 0.4rem;
+}
+.login-hint { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+.login-card label { margin-top: 0.9rem; }
+.login-card .btn-primary { width: 100%; margin-top: 1.4rem; }
+
+/* ── Responsive ─────────────────────────── */
+@media (max-width: 860px) {
+  .layout { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: static; }
+  .sidebar__nav { flex-direction: row; flex-wrap: wrap; }
+  .form--row { flex-wrap: wrap; }
+  .rowactions { flex-direction: row; }
+}
