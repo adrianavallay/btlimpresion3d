@@ -137,6 +137,7 @@ function admin_header(string $title, string $active = ''): void
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/admin.css">
+  <script src="assets/admin.js" defer></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%2316130F'/><text x='50' y='68' font-size='52' font-family='Arial' font-weight='900' fill='%23D97706' text-anchor='middle'>B</text></svg>">
 </head>
 <body>

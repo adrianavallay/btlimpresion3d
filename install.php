@@ -147,6 +147,15 @@ if (!$already && $_SERVER['REQUEST_METHOD'] === 'POST') {
     .msg--err { background: #FDECEA; border: 1px solid #F5C6CB; color: #93261F; }
     .msg--ok { background: #E8F5E9; border: 1px solid #A5D6A7; color: #1B5E20; }
     .msg--warn { background: #FFF7E6; border: 1px solid #F5D48F; color: #7A5200; }
+    .pw-wrap { position: relative; display: block; margin-top: .3rem; }
+    .pw-wrap input { margin-top: 0; padding-right: 2.9rem; }
+    .pw-toggle {
+      position: absolute; right: .4rem; top: 50%; transform: translateY(-50%);
+      background: none; border: 0; cursor: pointer; color: #8A8178;
+      padding: .4rem; border-radius: 6px; display: grid; place-items: center; line-height: 0;
+      width: auto; margin-top: 0;
+    }
+    .pw-toggle:hover { background: none; color: #16130F; }
     ul { margin: .6rem 0 1rem 1.2rem; font-size: .9rem; color: #4A443C; }
     a.next {
       display: block; text-align: center; margin-top: 1.2rem; font-weight: 700;
@@ -193,5 +202,31 @@ if (!$already && $_SERVER['REQUEST_METHOD'] === 'POST') {
       </form>
     <?php endif; ?>
   </div>
+  <script>
+  // Ojo de mostrar/ocultar en los campos de contraseña
+  (function () {
+    var EYE = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
+    var EYE_OFF = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c6.5 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3.5 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>';
+    document.querySelectorAll('input[type="password"]').forEach(function (input) {
+      var wrap = document.createElement('div');
+      wrap.className = 'pw-wrap';
+      input.parentNode.insertBefore(wrap, input);
+      wrap.appendChild(input);
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'pw-toggle';
+      btn.setAttribute('aria-label', 'Mostrar contraseña');
+      btn.innerHTML = EYE;
+      btn.addEventListener('click', function () {
+        var show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        btn.innerHTML = show ? EYE_OFF : EYE;
+        btn.setAttribute('aria-label', show ? 'Ocultar contraseña' : 'Mostrar contraseña');
+        input.focus();
+      });
+      wrap.appendChild(btn);
+    });
+  })();
+  </script>
 </body>
 </html>
