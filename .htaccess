@@ -4,7 +4,7 @@ DirectoryIndex index.php index.html
 # No listar directorios
 Options -Indexes
 
-# Bloquear archivos sensibles
-<FilesMatch "^(config\.php|config\.sample\.php|schema\.sql|README-DEPLOY\.md)$">
+# Bloquear archivos sensibles (el .env con las credenciales, sobre todo)
+<FilesMatch "^(\.env.*|schema\.sql|README-DEPLOY\.md)$">
   Require all denied
 </FilesMatch>

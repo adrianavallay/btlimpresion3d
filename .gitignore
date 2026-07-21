@@ -1,5 +1,5 @@
-# Credenciales locales del servidor — nunca subir
-config.php
+# Credenciales — nunca subir
+.env
 
 # Fotos subidas por el cliente (viven en el servidor, no en git)
 uploads/*

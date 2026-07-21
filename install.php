@@ -14,22 +14,17 @@ ini_set('display_errors', '0');
 $root = __DIR__;
 $already = false;
 
-// Si ya hay config y tablas con datos, no permitir reinstalar
-if (is_file($root . '/config.php')) {
+// Si ya hay .env y tablas con datos, no permitir reinstalar
+if (is_file($root . '/.env')) {
     try {
-        $cfg = require $root . '/config.php';
-        $pdo = new PDO(
-            sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', $cfg['db_host'], $cfg['db_port'] ?? '3306', $cfg['db_name']),
-            $cfg['db_user'],
-            $cfg['db_pass'],
-            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-        );
+        require_once $root . '/lib/db.php';
+        $pdo = db();
         $n = $pdo->query("SHOW TABLES LIKE 'settings'")->rowCount();
         if ($n > 0) {
             $already = true;
         }
     } catch (Throwable $e) {
-        // config roto o base inaccesible: se permite reinstalar
+        // .env roto o base inaccesible: se permite reinstalar
     }
 }
 
@@ -80,16 +75,19 @@ if (!$already && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            // 3. Escribir config.php
-            $cfgCode = "<?php\n// Generado por install.php el " . date('Y-m-d H:i') . "\nreturn [\n"
-                . "    'db_host' => " . var_export($host, true) . ",\n"
-                . "    'db_port' => " . var_export($port, true) . ",\n"
-                . "    'db_name' => " . var_export($name, true) . ",\n"
-                . "    'db_user' => " . var_export($user, true) . ",\n"
-                . "    'db_pass' => " . var_export($pass, true) . ",\n"
-                . "];\n";
-            if (file_put_contents($root . '/config.php', $cfgCode) === false) {
-                throw new RuntimeException('No se pudo escribir config.php (revisa permisos de la carpeta).');
+            // 3. Escribir .env con los datos sensibles
+            $q = static function (string $v): string {
+                // Envolver en comillas si contiene caracteres conflictivos
+                return preg_match('/[\s#\'"]/', $v) ? '"' . $v . '"' : $v;
+            };
+            $envCode = "# Generado por install.php el " . date('Y-m-d H:i') . "\n"
+                . "DB_HOST=" . $q($host) . "\n"
+                . "DB_PORT=" . $q($port) . "\n"
+                . "DB_NAME=" . $q($name) . "\n"
+                . "DB_USER=" . $q($user) . "\n"
+                . "DB_PASS=" . $q($pass) . "\n";
+            if (file_put_contents($root . '/.env', $envCode) === false) {
+                throw new RuntimeException('No se pudo escribir el archivo .env (revisa permisos de la carpeta).');
             }
 
             // 4. Resumen
@@ -167,7 +165,7 @@ if (!$already && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php elseif ($done): ?>
       <h1>¡Instalación completada!</h1>
-      <div class="msg msg--ok">Base de datos montada y config.php creado.</div>
+      <div class="msg msg--ok">Base de datos montada y archivo .env creado.</div>
       <ul>
         <li>Textos y ajustes: <?= $counts['settings'] ?></li>
         <li>Servicios: <?= $counts['services'] ?></li>

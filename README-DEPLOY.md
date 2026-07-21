@@ -13,14 +13,14 @@ cualquier cPanel), y una base de datos MySQL/MariaDB.
    con todos los permisos (si no existen ya).
 3. Abrir en el navegador **`https://TU-DOMINIO/install.php`**, poner las
    credenciales de la base y pulsar *Instalar*. El instalador crea las tablas
-   con el contenido inicial, genera `config.php` y se borra solo.
+   con el contenido inicial, genera el `.env` y se borra solo.
 4. **Primer acceso**: en `https://TU-DOMINIO/dyp-admin/` crear el usuario y
    contraseña del administrador.
 
 ## Instalación manual (alternativa)
 
 1. cPanel → *phpMyAdmin* → seleccionar la base → *Importar* → subir `schema.sql`
-2. Copiar `config.sample.php` como `config.php` y rellenar host (normalmente
+2. Copiar `.env.example` como `.env` y rellenar host (normalmente
    `localhost`), nombre de la base, usuario y contraseña.
 3. Borrar `install.php` del servidor.
 
@@ -29,7 +29,7 @@ carpeta `uploads/` (755 suele bastar; 775 si el hosting lo requiere).
 
 ## Notas
 
-- `config.php` y `uploads/` están fuera de git: los cambios del cliente viven
+- `.env` (credenciales) y `uploads/` están fuera de git: los cambios del cliente viven
   en el servidor y un `git pull` nunca los pisa.
 - `index.html` es el demo estático de GitHub Pages; el `.htaccess` hace que el
   hosting sirva `index.php`. Cuando el hosting sea el definitivo, se puede
