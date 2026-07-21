@@ -6,25 +6,26 @@ cliente edite textos, fotos y datos de contacto sin tocar el diseño.
 **Requisitos:** PHP 8.1+ con extensiones `pdo_mysql` y `gd` (estándar en
 cualquier cPanel), y una base de datos MySQL/MariaDB.
 
-## Pasos de instalación
+## Instalación fácil (con el instalador web)
 
-1. **Base de datos** (no hay que "instalar" nada: en hosting compartido MySQL ya
-   está corriendo):
-   - cPanel → *MySQL® Databases* → crear una base de datos, crear un usuario y
-     asignarlo a la base con todos los permisos
-   - cPanel → *phpMyAdmin* → seleccionar la base → *Importar* → subir `schema.sql`
+1. **Archivos**: subir todo el proyecto a `public_html/` (git clone, FTP o ZIP).
+2. **Base de datos**: cPanel → *MySQL® Databases* → crear una base y un usuario
+   con todos los permisos (si no existen ya).
+3. Abrir en el navegador **`https://TU-DOMINIO/install.php`**, poner las
+   credenciales de la base y pulsar *Instalar*. El instalador crea las tablas
+   con el contenido inicial, genera `config.php` y se borra solo.
+4. **Primer acceso**: en `https://TU-DOMINIO/dyp-admin/` crear el usuario y
+   contraseña del administrador.
 
-2. **Archivos**: subir todo el proyecto a `public_html/` (por FTP, gestor de
-   archivos o `git clone` + `git pull` si el hosting tiene Git/SSH).
+## Instalación manual (alternativa)
 
-3. **Configuración**: copiar `config.sample.php` como `config.php` y rellenar
-   host (normalmente `localhost`), nombre de la base, usuario y contraseña.
+1. cPanel → *phpMyAdmin* → seleccionar la base → *Importar* → subir `schema.sql`
+2. Copiar `config.sample.php` como `config.php` y rellenar host (normalmente
+   `localhost`), nombre de la base, usuario y contraseña.
+3. Borrar `install.php` del servidor.
 
-4. **Primer acceso**: abrir `https://TU-DOMINIO/dyp-admin/` — la primera vez
-   pide crear el usuario y contraseña del administrador.
-
-5. **Permisos**: si la subida de fotos falla, dar permisos de escritura a la
-   carpeta `uploads/` (755 suele bastar; 775 si el hosting lo requiere).
+**Permisos**: si la subida de fotos falla, dar permisos de escritura a la
+carpeta `uploads/` (755 suele bastar; 775 si el hosting lo requiere).
 
 ## Notas
 
