@@ -284,21 +284,36 @@ function servicesFX() {
   const previewImg = document.getElementById("servicePreviewImg");
   const xTo = gsap.quickTo(preview, "x", { duration: 0.45, ease: "power3" });
   const yTo = gsap.quickTo(preview, "y", { duration: 0.45, ease: "power3" });
+  let previewVisible = false;
+
+  const showPreview = (src) => {
+    previewVisible = true;
+    previewImg.src = src;
+    gsap.to(preview, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" });
+  };
+  const hidePreview = () => {
+    if (!previewVisible) return;
+    previewVisible = false;
+    gsap.to(preview, { opacity: 0, scale: 0.85, duration: 0.3, ease: "power3.in" });
+  };
 
   document.querySelectorAll(".service").forEach((row) => {
-    row.addEventListener("mouseenter", () => {
-      previewImg.src = row.dataset.img;
-      gsap.to(preview, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" });
-    });
-    row.addEventListener("mouseleave", () => {
-      gsap.to(preview, { opacity: 0, scale: 0.85, duration: 0.3, ease: "power3.in" });
-    });
+    row.addEventListener("mouseenter", () => showPreview(row.dataset.img));
+    row.addEventListener("mouseleave", hidePreview);
   });
 
   window.addEventListener("mousemove", (e) => {
     xTo(e.clientX + 24);
     yTo(e.clientY - 105);
+    // Red de seguridad: si el puntero no está sobre una fila, soltar la imagen
+    if (previewVisible && !(e.target instanceof Element && e.target.closest(".service"))) {
+      hidePreview();
+    }
   });
+
+  // Al hacer scroll con la rueda el cursor no se mueve y mouseleave no
+  // llega a dispararse: soltar la imagen también aquí
+  window.addEventListener("scroll", hidePreview, { passive: true });
 }
 
 /* ──────────────────────────────────────────
